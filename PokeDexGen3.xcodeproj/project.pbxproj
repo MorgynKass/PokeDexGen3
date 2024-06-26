@@ -57,9 +57,9 @@
 			children = (
 				F1C38FB62C2C995B00D4395F /* PokeDexGen3App.swift */,
 				F1C38FB82C2C995B00D4395F /* ContentView.swift */,
-				F1C38FBA2C2C995C00D4395F /* Assets.xcassets */,
 				F1C38FBF2C2C995C00D4395F /* Persistence.swift */,
 				F1C38FC12C2C995C00D4395F /* PokeDexGen3.xcdatamodeld */,
+				F1C38FBA2C2C995C00D4395F /* Assets.xcassets */,
 				F1C38FBC2C2C995C00D4395F /* Preview Content */,
 			);
 			path = PokeDexGen3;
