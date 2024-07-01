@@ -56,21 +56,18 @@ struct TempPokemon: Codable {
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         
-        func getNestedTypes() -> [String] {
-            var decodedTypes: [String] = []
-            var typesContainer = try! container.nestedUnkeyedContainer(forKey: .types)
+        var decodedTypes: [String] = []
+        var typesContainer = try! container.nestedUnkeyedContainer(forKey: .types)
+        
+        while !typesContainer.isAtEnd {
+            let typesDictionaryContainer = try! typesContainer.nestedContainer(keyedBy: PokemonKeys.TypeDictionaryKeys.self)
+            let typeContainer = try! typesDictionaryContainer.nestedContainer(keyedBy: PokemonKeys.TypeDictionaryKeys.TypeKeys.self, forKey: .type)
             
-            while !typesContainer.isAtEnd {
-                let typesDictionaryContainer = try! typesContainer.nestedContainer(keyedBy: PokemonKeys.TypeDictionaryKeys.self)
-                let typeContainer = try! typesDictionaryContainer.nestedContainer(keyedBy: PokemonKeys.TypeDictionaryKeys.TypeKeys.self, forKey: .type)
-                
-                let type = try! typeContainer.decode(String.self, forKey: .name)
-                decodedTypes.append(type)
-            }
-            return decodedTypes
+            let type = try! typeContainer.decode(String.self, forKey: .name)
+            decodedTypes.append(type)
         }
         
-        types = getNestedTypes()
+        types = decodedTypes
         
         var statsContainer = try! container.nestedUnkeyedContainer(forKey: .stats)
         while !statsContainer.isAtEnd {
