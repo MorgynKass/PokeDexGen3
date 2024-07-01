@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreData
 
-struct PokemonDetail: View {
+struct PokemonDetailView: View {
     @EnvironmentObject var pokemon: Pokemon
     @State var showShiny = false
     
@@ -46,6 +46,14 @@ struct PokemonDetail: View {
                 Spacer()
             }
             .padding()
+            
+            Text("Stats")
+                .font(.title)
+                .padding(.bottom, -5)
+            
+            StatsView()
+                .environmentObject(pokemon)
+            
         }
         .navigationTitle(pokemon.name!.capitalized)
         .toolbar {
@@ -66,6 +74,6 @@ struct PokemonDetail: View {
 }
 
 #Preview {
-    PokemonDetail()
+    PokemonDetailView()
         .environmentObject(SamplePokemon.samplePokemon)
 }
