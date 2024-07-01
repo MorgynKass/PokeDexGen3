@@ -15,13 +15,14 @@ struct PokemonDetail: View {
     var body: some View {
         ScrollView {
             ZStack {
-                Image("normalgrasselectricpoisonfairy")
+                Image(pokemon.background)
                     .resizable()
                     .scaledToFit()
                     .shadow(color: .black, radius: 6)
                 
                 AsyncImage(url: showShiny ? pokemon.shinySprite: pokemon.sprite) { image in
                     image
+                        .interpolation(.none)
                         .resizable()
                         .scaledToFit()
                         .padding(.top, 50)
