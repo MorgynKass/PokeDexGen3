@@ -54,7 +54,7 @@ class ViewModel: ObservableObject {
                 newPokemon.speed = Int16(pokemon.speed)
                 newPokemon.sprite = pokemon.sprite
                 newPokemon.shinySprite = pokemon.shinySprite
-                newPokemon.favortie = false
+                newPokemon.favorite = false
                 
                 try PersistenceController.shared.container.viewContext.save()
             }

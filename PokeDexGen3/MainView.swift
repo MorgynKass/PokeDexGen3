@@ -10,27 +10,32 @@ import CoreData
 
 struct MainView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Pokemon.id, ascending: true)],
         animation: .default
     ) private var pokedex: FetchedResults<Pokemon>
     
-//    @FetchRequest(
-//        sortDescriptors: [NSSortDescriptor(keyPath: \Pokemon.id, ascending: true)],
-//        predicate: NSPredicate(format: "favorite = %d", true),
-//        animation: .default
-//    ) private var favorites: FetchedResults<Pokemon>
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Pokemon.id, ascending: true)],
+        predicate: NSPredicate(format: "favorite = %d", true),
+        animation: .default
+    ) private var favorites: FetchedResults<Pokemon>
     
     @State var filterByFavorites = false
     @StateObject private var pokemonVM = ViewModel(controller: FetchCotroller())
 
     var body: some View {
-        switch pokemonVM.status {
-        case .success:
+//        switch pokemonVM.status {
+//        case .success:
             NavigationStack {
-                List(pokedex) { pokemon in
+                List(filterByFavorites ? favorites : pokedex) { pokemon in
                     NavigationLink(value: pokemon) {
+                        if pokemon.favorite {
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.yellow)
+                        }
+                        
                         AsyncImage(url: pokemon.sprite) { image in
                             image
                                 .resizable()
@@ -41,6 +46,7 @@ struct MainView: View {
                         .frame(width: 100, height: 100)
                         
                         Text(pokemon.name!.capitalized)
+                        
                     }
                     
                 }
@@ -52,21 +58,25 @@ struct MainView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
-                            filterByFavorites.toggle()
+                            withAnimation(.easeInOut(duration: 1)) {
+                                filterByFavorites.toggle()
+                            }
+                            
                         } label: {
-                            Label("Filter By Favorites", systemImage: filterByFavorites ? "star.fill" : "star")
+                            Label("Filter By Favorites", systemImage: filterByFavorites ? "star.slash" : "star.fill")
                         }
+                        .tint(.yellow)
                     }
                 }
             }
             
-        default:
-            ProgressView()
-            Text("Pokemon loading...")
-                .padding(.top, 10)
-                .foregroundStyle(Color(.gray))
-            
-        }
+//        default:
+//            ProgressView()
+//            Text("Pokemon loading...")
+//                .padding(.top, 10)
+//                .foregroundStyle(Color(.gray))
+//            
+//        }
     }
 }
 
