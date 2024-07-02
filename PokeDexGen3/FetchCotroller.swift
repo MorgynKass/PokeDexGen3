@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 struct FetchCotroller {
     enum NetworkError: Error {
@@ -14,7 +15,11 @@ struct FetchCotroller {
     
     private let baseURL = URL(string: "https://pokeapi.co/api/v2/pokemon/")!
     
-    func fetchAllPokemon() async throws -> [TempPokemon] {
+    func fetchAllPokemon() async throws -> [TempPokemon]? {
+        if pokemonExists() {
+            return nil
+        }
+        
         var allPokemon: [TempPokemon] = []
         
         var fetchComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
@@ -55,5 +60,26 @@ struct FetchCotroller {
         print("Fetched \(tempPokemon.id): \(tempPokemon.name)")
         
         return tempPokemon
+    }
+    
+    private func pokemonExists() -> Bool {
+        let context = PersistenceController.shared.container.newBackgroundContext()
+        
+        let fetchRequest: NSFetchRequest<Pokemon> = Pokemon.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id IN %@", [1, 386])
+        
+        do {
+            let checkPokemon = try context.fetch(fetchRequest)
+            
+            if checkPokemon.count == 2 {
+                return true
+            }
+            
+        } catch {
+            print("Fetch failed, pokemon do not exist: \(error)")
+            return false
+        }
+        
+        return false
     }
 }

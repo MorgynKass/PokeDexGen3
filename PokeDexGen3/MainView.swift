@@ -13,9 +13,16 @@ struct MainView: View {
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Pokemon.id, ascending: true)],
-        animation: .default)
-    private var pokedex: FetchedResults<Pokemon>
+        animation: .default
+    ) private var pokedex: FetchedResults<Pokemon>
     
+//    @FetchRequest(
+//        sortDescriptors: [NSSortDescriptor(keyPath: \Pokemon.id, ascending: true)],
+//        predicate: NSPredicate(format: "favorite = %d", true),
+//        animation: .default
+//    ) private var favorites: FetchedResults<Pokemon>
+    
+    @State var filterByFavorites = false
     @StateObject private var pokemonVM = ViewModel(controller: FetchCotroller())
 
     var body: some View {
@@ -42,10 +49,22 @@ struct MainView: View {
                     PokemonDetailView()
                         .environmentObject(pokemon)
                 })
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            filterByFavorites.toggle()
+                        } label: {
+                            Label("Filter By Favorites", systemImage: filterByFavorites ? "star.fill" : "star")
+                        }
+                    }
+                }
             }
             
         default:
             ProgressView()
+            Text("Pokemon loading...")
+                .padding(.top, 10)
+                .foregroundStyle(Color(.gray))
             
         }
     }
