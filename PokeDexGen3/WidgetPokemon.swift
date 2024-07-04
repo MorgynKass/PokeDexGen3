@@ -18,7 +18,7 @@ struct WidgetPokemon: View {
     
     var body: some View {
         ZStack {
-            Color(pokemon.types![0].capitalized)
+//            Color(pokemon.types![0].capitalized)
             
             switch widgetSize {
             case .small:
@@ -27,15 +27,26 @@ struct WidgetPokemon: View {
             case .medium:
                 HStack {
                     FetchedImage(url: pokemon.sprite)
-                        .padding(.trailing, -30)
+                        .frame(width: 200)
+                        .padding(.trailing, -50)
                     
                     VStack(alignment: .leading) {
                         Text(pokemon.name!.capitalized)
-                            .font(.title)
+                            .frame(width: 100)
+                            .font(.title3)
+                            .foregroundStyle(.white)
+                            .padding(8)
+                            .background(Color(pokemon.types![0].capitalized))
+                            .cornerRadius(20)
                         
                         Text(pokemon.types!.joined(separator: ", ").capitalized)
+                            .frame(width: 120)
+                            .font(.subheadline)
+                            
+                        
                     }
-                    .padding(.trailing, 65)
+                    .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                    .padding(40)
                 }
                 
             case .large:
@@ -47,7 +58,7 @@ struct WidgetPokemon: View {
                             .font(.largeTitle)
                             .foregroundStyle(.white)
                             .padding(8)
-                            .background(Color(pokemon.types![1].capitalized))
+                            .background(Color(pokemon.types![0].capitalized))
                             .cornerRadius(20)
                         
                         Spacer()
@@ -62,7 +73,7 @@ struct WidgetPokemon: View {
                             .font(.title2)
                             .foregroundStyle(.white)
                             .padding(8)
-                            .background(Color(pokemon.types![1].capitalized))
+                            .background(Color(pokemon.types![0].capitalized))
                             .cornerRadius(20)
                     }
                 }
@@ -73,6 +84,6 @@ struct WidgetPokemon: View {
 }
 
 #Preview {
-    WidgetPokemon(widgetSize: .large)
+    WidgetPokemon(widgetSize: .medium)
         .environmentObject(SamplePokemon.samplePokemon)
 }

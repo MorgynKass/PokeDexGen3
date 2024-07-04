@@ -26,8 +26,8 @@ struct MainView: View {
     @StateObject private var pokemonVM = ViewModel(controller: FetchCotroller())
 
     var body: some View {
-//        switch pokemonVM.status {
-//        case .success:
+        switch pokemonVM.status {
+        case .success:
             NavigationStack {
                 List(filterByFavorites ? favorites : pokedex) { pokemon in
                     NavigationLink(value: pokemon) {
@@ -58,7 +58,7 @@ struct MainView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
-                            withAnimation(.easeInOut(duration: 1)) {
+                            withAnimation(.easeInOut(duration: 5)) {
                                 filterByFavorites.toggle()
                             }
                             
@@ -70,13 +70,13 @@ struct MainView: View {
                 }
             }
             
-//        default:
-//            ProgressView()
-//            Text("Pokemon loading...")
-//                .padding(.top, 10)
-//                .foregroundStyle(Color(.gray))
-//            
-//        }
+        default:
+            ProgressView()
+            Text("Pokemon loading...")
+                .padding(.top, 10)
+                .foregroundStyle(Color(.gray))
+            
+        }
     }
 }
 

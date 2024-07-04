@@ -45,6 +45,8 @@ struct PersistenceController {
         
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        } else {
+            container.persistentStoreDescriptions.first!.url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.morgynkass.PokeDexGen3Group")!.appending(path: "PokeDexGen3.sqlite")
         }
         
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
